@@ -53,7 +53,7 @@ beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "x-terminal-emulator"
-editor = os.getenv("EDITOR") or "editor"
+editor = os.getenv("EDITOR") or "code"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -579,4 +579,8 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
--- }}}`
+-- }}}
+
+-- Autostart applications
+awful.spawn.with_shell("compton") --compository
+awful.spawn.with_shell("nitrogen --restore") --draws wallpaper
