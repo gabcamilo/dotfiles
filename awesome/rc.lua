@@ -336,6 +336,11 @@ globalkeys = gears.table.join(
     awful.key({ modkey },            "r",     function ()
         awful.util.spawn("dmenu_run") end,
                    {description = "run dmenu", group = "launcher"}),
+    
+    -- Browser
+        awful.key({ modkey },            "b",     function ()
+        awful.util.spawn("brave-browser") end,
+                    {description = "run Brave browser", group = "applications"}),
 
     awful.key({ modkey }, "x",
               function ()
