@@ -25,3 +25,5 @@ eog
 gtk-3.0
 pop-system-updater
 .gsd-keyboard.settings-ported
+gh/config.yml
+gh/hosts.yml
