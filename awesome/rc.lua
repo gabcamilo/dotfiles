@@ -603,8 +603,10 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 -- Autostart applications
-awful.spawn.with_shell("compton") --compository
+
+awful.spawn.with_shell("picom") -- window transparency, blur, shadow, etc
 awful.spawn.with_shell("nitrogen --restore") --draws wallpaper
+awful.spawn.with_shell("lxsession") -- session manager
 
 -- Custom configs
 beautiful.useless_gap = 5
