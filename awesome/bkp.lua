@@ -1,17 +1,6 @@
 local awesome, client, mouse, screen, tag = awesome, client, mouse, screen, tag
 local string, os, table, tostring, tonumber, type, ipairs = string, os, table, tostring, tonumber, type, ipairs
 
--- Override awesome.quit when we're using GNOME
-_awesome_quit = awesome.quit
-awesome.quit = function()
-    if os.getenv("DESKTOP_SESSION") == "awesome-gnome" then
-       os.execute("/usr/bin/gnome-session-quit") -- for Ubuntu 14.04
-       os.execute("pkill -9 gnome-session") -- I use this on Ubuntu 16.04
-    else
-    _awesome_quit()
-    end
-end
-
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -39,8 +28,6 @@ local menubar = require("menubar") -- TODO: replace with dmenu scripts
 -- when client with a matching name is opened:
 local hotkeys_popup = require("awful.hotkeys_popup")
                       require("awful.hotkeys_popup.keys")
-
-local my_table = gears.table 
 
 -- Load Debian menu entries
 local debian = require("debian.menu")
@@ -405,20 +392,15 @@ globalkeys = gears.table.join(
         awful.util.spawn("dmenu_run") end,
                    {description = "run dmenu", group = "launcher"}),
     
-    -- [custom] Open Browser - Vivaldi
+    -- [custom] Browser
         awful.key({ modkey },            "b",     function ()
         awful.util.spawn("vivaldi") end,
-                    {description = "run Vivaldi browser", group = "_applications"}),
+                    {description = "run Vivaldi browser", group = "applications"}),
 
-    -- [custom] Open VsCode
+    -- [custom] VsCode
     awful.key({ modkey },            "c",     function ()
     awful.util.spawn("code") end,
-                {description = "run VS Code", group = "_code"}),
-
-    -- [custom] Open VsCode
-    awful.key({ modkey },            "c",     function ()
-        awful.util.spawn("vim") end,
-                    {description = "run Vim", group = "_code"}),
+                {description = "run VS Code", group = "applications"}),
 
     awful.key({ modkey }, "x",
               function ()
@@ -597,7 +579,7 @@ awful.rules.rules = {
     -- Add titlebars to normal clients and dialogs
     { rule_any = {type = { "normal", "dialog" }
       }, properties = { titlebars_enabled = false }
-        },
+    },
 
     -- Set Firefox to always map on the tag named "2" on screen 1.
     -- { rule = { class = "Firefox" },
@@ -653,32 +635,20 @@ client.connect_signal("request::titlebars", function(c)
             awful.titlebar.widget.maximizedbutton(c),
             awful.titlebar.widget.stickybutton   (c),
             awful.titlebar.widget.ontopbutton    (c),
-            awful.titlebar.widget.closebrutton    (c),
+            awful.titlebar.widget.closebutton    (c),
             layout = wibox.layout.fixed.horizontal()
         },
         layout = wibox.layout.align.horizontal
     }
 end)
 
--- No border for maximized clients
-function border_adjust(c)
-    if c.maximized then -- no borders if only 1 client visible
-        c.border_width = 0
-        beautiful.useless_gap = 3
-    elseif #awful.screen.focused().clients > 1 then
-        c.border_width = beautiful.border_width
-        c.border_color = beautiful.border_focus
-        beautiful.useless_gap = 0
-    end
-end
-
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+-- client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+-- client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
 -- Autostart applications
@@ -688,4 +658,4 @@ awful.spawn.with_shell("picom") -- window transparency, blur, shadow, etc
 awful.spawn.with_shell("nitrogen --restore") --draws wallpaper
 
 -- [custom] Custom configs
-beautiful.useless_gap = 3
+beautiful.useless_gap = 5
